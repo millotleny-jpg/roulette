@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spin's Wheels</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+    <div class="app-layout">
+        <!-- BARRE DE NAVIGATION LATÉRALE -->
+        <header class="app-sidebar">
+            <div class="brand">
+                <span class="brand-icon"></span>
+                <h2 data-i18n="brandTitle">SPIN'S ROUE</h2>
+                <span class="badge">PRODIGE</span>
+            </div>
+            <nav class="nav-menu">
+                <button class="nav-btn active" data-tab="wheel-tab">
+                    <span class="icon">🎡</span> <span data-i18n="navWheels">Roulettes & Jeux</span>
+                </button>
+                <button class="nav-btn" data-tab="category-tab">
+                    <span class="icon">📂</span> <span data-i18n="navCategories">Catégories & Arbre</span>
+                </button>
+                <button class="nav-btn" data-tab="manage-tab">
+                    <span class="icon">⚙️</span> <span data-i18n="navEdit">Édition & Options</span>
+                </button>
+                <button class="nav-btn" data-tab="language-tab">
+                    <span class="icon">🌐</span> <span data-i18n="navLang">Langue</span>
+                </button>
+            </nav>
+            <div class="sidebar-footer">
+                <button id="fullscreenBtn" class="btn-ghost" data-i18n="fullscreen">⛶ Mode Plein Écran</button>
+            </div>
+        </header>
+
+        <!-- CONTENU PRINCIPAL -->
+        <main class="app-content">
+            
+            <!-- ONGLET 1 : ROULETTES & CAROUSEL -->
+            <section id="wheel-tab" class="tab-pane active">
+                <div class="wheel-pane-grid">
+                    <div class="card selector-card">
+                        <h3 data-i18n="quickSelect">Sélection Rapide</h3>
+                        <select id="quickListSelector" class="form-select"></select>
+                        <div class="divider"></div>
+                        
+                        <h3 data-i18n="activeWheels">Roues Actives (Visibilité)</h3>
+                        <p class="subtitle-small" data-i18n="checkWheels">Cochez les roues à afficher :</p>
+                        <div id="activeWheelsCheckboxesContainer" class="wheels-visibility-list"></div>
+
+                        <div class="divider"></div>
+                        <h4 data-i18n="shareDistribution">Répartition des parts</h4>
+                        <div id="activeItemsPreview" class="preview-list"></div>
+                        <div class="inline-form"><input type="text" id="quickAddInput" class="form-input" data-i18n-placeholder="quickAddPlaceholder" placeholder="Ajouter : Pizza:20, Sushi"><button id="quickAddBtn" class="btn-primary">+</button></div>
+                    </div>
+
+                    <div class="card center-carousel-card">
+                        <div class="carousel-nav-bar">
+                            <button id="sliderPrevBtn" class="btn-icon">◀</button>
+                            <div id="categorySliderTabs" class="category-tabs-scroll"></div>
+                            <button id="sliderNextBtn" class="btn-icon">▶</button>
+                        </div>
+                        <div id="wheelsSliderContainer" class="wheels-slider"></div>
+                        <div id="result" class="result-display" data-i18n="clickOrSpace">Cliquez sur la roue ou appuyez sur Espace</div>
+                    </div>
+
+                    <div class="card history-card">
+                        <h3 data-i18n="recentHistory">Historique Récent</h3>
+                        <ul id="recentResultsList" class="history-list"></ul>
+                        <button id="clearHistoryBtn" class="btn-subtle" data-i18n="clearHistory">Vider l'historique</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ONGLET 2 : ARBRE DES CATÉGORIES -->
+            <section id="category-tab" class="tab-pane">
+                <div class="card full-card">
+                    <div class="pane-header">
+                        <h3 data-i18n="treeTitle">Arborescence des Catégories & Roues</h3>
+                        <div class="inline-form">
+                            <input type="text" id="treeNewCategoryInput" data-i18n-placeholder="newCatPlaceholder" placeholder="Nouvelle catégorie..." class="form-input">
+                            <button id="treeAddCategoryBtn" class="btn-primary" data-i18n="createBtn">+ Créer</button>
+                        </div>
+                    </div>
+                    <div id="categoriesTreeContainer" class="tree-container"></div>
+                </div>
+            </section>
+
+            <!-- ONGLET 3 : GESTION & MULTI-IMPORT -->
+            <section id="manage-tab" class="tab-pane">
+                <div class="manage-grid">
+                    <div class="card">
+                        <h3 data-i18n="configList">Configuration de la Liste</h3>
+                        <div class="form-group"><label data-i18n="wheelToEdit">Roue à modifier</label><select id="manageListSelect" class="form-select"></select></div>
+                        <div class="form-group">
+                            <label data-i18n="listName">Nom de la liste</label>
+                            <div class="inline-form">
+                                <input type="text" id="renameListInput" class="form-input">
+                                <button id="renameListBtn" class="btn-secondary">OK</button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label data-i18n="categoryLabel">Catégorie</label>
+                            <select id="categorySelect" class="form-select"></select>
+                        </div>
+                        <div class="form-group visibility-toggle-box">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="visibleOnMainCheckbox"> <span data-i18n="showOnHome">Afficher cette roue sur l'accueil</span>
+                            </label>
+                        </div>
+                        <div class="settings-grid">
+                            <label for="setDuration" data-i18n="setDuration">Durée du tour (s)</label><input type="number" id="setDuration" class="form-input-small" min="1" max="20" step="0.5">
+                            <label for="setMinSpins" data-i18n="setMinSpins">Tours minimum</label><input type="number" id="setMinSpins" class="form-input-small" min="1" max="30">
+                            <label for="setConfetti" data-i18n="setConfetti">Confettis (0 = aucun)</label><input type="number" id="setConfetti" class="form-input-small" min="0" max="500" step="10">
+                            <label class="checkbox-label"><input type="checkbox" id="setSound"> <span data-i18n="setSound">Sons</span></label>
+                            <label class="checkbox-label"><input type="checkbox" id="setPercent"> <span data-i18n="setPercent">Afficher les pourcentages</span></label>
+                            <label class="checkbox-label"><input type="checkbox" id="setElim"> <span data-i18n="setElim">Mode élimination (le gagnant est retiré)</span></label>
+                        </div>
+                        <div class="form-actions-row">
+                            <button id="newListBtn" class="btn-primary" data-i18n="newWheel">+ Nouvelle roue</button>
+                            <button id="duplicateListBtn" class="btn-secondary" data-i18n="duplicate">Dupliquer</button>
+                            <button id="deleteListBtn" class="btn-danger" data-i18n="delete">Supprimer</button>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="form-actions-row">
+                            <button id="exportJsonBtn" class="btn-subtle" data-i18n="export">Exporter</button>
+                            <button id="importJsonBtn" class="btn-subtle" data-i18n="import">Importer</button>
+                            <input type="file" id="importFileinput" accept=".json" hidden>
+                        </div>
+                    </div>
+
+                    <div class="card flex-grow">
+                        <h3 data-i18n="itemsAndImport">Éléments de la roue & Multi-Import</h3>
+                        
+                        <div class="multi-import-box">
+                            <label><strong data-i18n="smartImport">Multi-Import Intelligent :</strong> (Ex: <code>Ex:50 , Ex:50</code>)</label>
+                            <div class="inline-form">
+                                <input type="text" id="multiImportInput" data-i18n-placeholder="multiImportPlaceholder" placeholder="Nom:Poids , Nom:Poids..." class="form-input">
+                                <button id="multiImportBtn" class="btn-secondary" data-i18n="importBtn">Importer</button>
+                            </div>
+                        </div>
+
+                        <div class="toolbar">
+                            <div class="gradient-pickers">
+                                <input type="color" id="gradColor1" value="#6366f1" title="Couleur début">
+                                <input type="color" id="gradColor2" value="#ec4899" title="Couleur fin">
+                                <button id="applyGradientBtn" class="btn-secondary" data-i18n="gradient">Dégradé</button>
+                            </div>
+                            <div class="sort-buttons">
+                                <button id="sortDescBtn" class="btn-subtle" data-i18n="sortWeight">Poids</button>
+                                <button id="sortAlphaBtn" class="btn-subtle" data-i18n="sortAlpha">A-Z</button>
+                                <button id="sortRandomBtn" class="btn-subtle" data-i18n="sortRandom">Aléatoire</button>
+                                <button id="equalizeBtn" class="btn-subtle" data-i18n="equalize">Égaliser</button>
+                            </div>
+                        </div>
+                        <div class="add-item-bar">
+                            <input type="text" id="itemNameInput" data-i18n-placeholder="itemPlaceholder" placeholder="Nom de l'option..." class="form-input">
+                            <input type="color" id="itemColorInput" value="#8b5cf6" class="color-picker-input">
+                            <input type="number" id="itemWeightInput" value="25" class="form-input-small" placeholder="Poids">
+                            <button id="addItemBtn" class="btn-primary" data-i18n="add">Ajouter</button>
+                        </div>
+                        <div class="table-wrapper">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th data-i18n="thColor">Couleur</th>
+                                        <th data-i18n="thName">Nom</th>
+                                        <th data-i18n="thWeight">Poids / Chance</th>
+                                        <th data-i18n="thAction">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="itemsTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ONGLET 4 : LANGUE (GRILLE DE CAPSULES) -->
+            <section id="language-tab" class="tab-pane">
+                <div class="card full-card">
+                    <div class="pane-header">
+                        <div>
+                            <h3 data-i18n="langTitle">Sélection de la Langue</h3>
+                            <p class="subtitle-small" data-i18n="langSubtitle">Cliquez sur une capsule pour appliquer instantanément la langue à toute l'interface :</p>
+                        </div>
+                    </div>
+                    <div id="languageGridContainer" class="language-capsule-grid"></div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <div id="winnerModal" class="modal" hidden role="dialog" aria-modal="true">
+        <div class="modal-box">
+            <p id="winnerWheel"></p>
+            <h2 id="winnerName"></h2>
+            <p id="winnerNote"></p>
+            <div class="modal-actions">
+                <button id="winnerAgainBtn" class="btn-primary" data-i18n="spinAgain">Relancer</button>
+                <button id="winnerCloseBtn" class="btn-secondary" data-i18n="close">Fermer</button>
+            </div>
+        </div>
+    </div>
+    <div id="toasts" class="toasts" aria-live="polite"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
