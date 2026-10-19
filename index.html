@@ -2,13 +2,17 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+    <meta name="theme-color" content="#0f0b16">
+    <meta name="color-scheme" content="dark">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Spin's Wheels</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <link rel="icon" type="image/png" href="./RoueIco.png">
 </head>
 <body>
     <div class="app-layout">
@@ -24,7 +28,7 @@
                     <span class="icon">🎡</span> <span data-i18n="navWheels">Roulettes & Jeux</span>
                 </button>
                 <button class="nav-btn" data-tab="category-tab">
-                    <span class="icon">📂</span> <span data-i18n="navCategories">Catégories</span>
+                    <span class="icon">📂</span> <span data-i18n="navCategories">Catégories & Arbre</span>
                 </button>
                 <button class="nav-btn" data-tab="manage-tab">
                     <span class="icon">⚙️</span> <span data-i18n="navEdit">Édition & Options</span>
@@ -34,7 +38,7 @@
                 </button>
             </nav>
             <div class="sidebar-footer">
-                <button id="fullscreenBtn" class="btn-ghost" data-i18n="fullscreen">⛶ Mode Plein Écran</button>
+                <button id="fullscreenBtn" class="btn-ghost" title="Plein écran" data-i18n="fullscreen">⛶ Mode Plein Écran</button>
             </div>
         </header>
 
