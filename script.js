@@ -562,24 +562,6 @@ function createDefaultData() {
                     { id: 2, name: 'Chien', color: '#f59e0b', weight: 45 },
                     { id: 3, name: 'Oiseau', color: '#10b981', weight: 25 }
                 ]
-            },
-            list_2: {
-                name: 'Langues',
-                category: 'Général',
-                spinDuration: 4.0,
-                confettiIntensity: 120,
-                minSpins: 6,
-                eliminationMode: false,
-                soundEnabled: true,
-                showPercentages: true,
-                visibleOnMain: true,
-                items: [
-                    { id: 1, name: 'Français', color: '#6366f1', weight: 20 },
-                    { id: 2, name: 'Anglais', color: '#ec4899', weight: 20 },
-                    { id: 3, name: 'Espagnol', color: '#10b981', weight: 20 },
-                    { id: 4, name: 'Allemand', color: '#f59e0b', weight: 20 },
-                    { id: 5, name: 'Italien', color: '#3b82f6', weight: 20 }
-                ]
             }
         }
     };
