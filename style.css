@@ -277,3 +277,8 @@ button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; filter: no
     .center-carousel-card { order: -1; }
     .full-card { height: auto; }
 }
+.site-logo {
+    width: 120px;
+    height: 120px;
+    object-fit: contain;
+}
