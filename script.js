@@ -558,9 +558,9 @@ function createDefaultData() {
                 showPercentages: true,
                 visibleOnMain: true,
                 items: [
-                    { id: 1, name: 'Chat', color: '#f43f5e', weight: 30 },
-                    { id: 2, name: 'Chien', color: '#f59e0b', weight: 45 },
-                    { id: 3, name: 'Oiseau', color: '#10b981', weight: 25 }
+                    { id: 1, name: 'Option 1', color: '#f43f5e', weight: 30 },
+                    { id: 2, name: 'Option 2', color: '#f59e0b', weight: 45 },
+                    { id: 3, name: 'Option 3', color: '#10b981', weight: 25 }
                 ]
             }
         }
@@ -1375,3 +1375,27 @@ document.getElementById('importFileinput').onchange = (e) => {
 applyRecursiveTranslations();
 renderCategorySlider();
 renderRecentResults();
+
+// --- Responsive : ajustements multi-appareils (téléphone / tablette / ordi) ---
+(function () {
+    const root = document.documentElement;
+    const fsBtn = document.getElementById('fullscreenBtn');
+    // iPhone Safari ne supporte pas le plein écran : on masque le bouton plutôt qu'une erreur
+    if (!(root.requestFullscreen || root.webkitRequestFullscreen)) fsBtn.style.display = 'none';
+
+    // Redessine les roues quand leur conteneur change de taille (rotation, clavier, split-screen...)
+    const slider = document.getElementById('wheelsSliderContainer');
+    if ('ResizeObserver' in window && slider) {
+        let raf = 0;
+        new ResizeObserver(() => {
+            cancelAnimationFrame(raf);
+            raf = requestAnimationFrame(() => Object.keys(wheelAngles).forEach(id => drawWheel(id, wheelAngles[id])));
+        }).observe(slider);
+    }
+    window.addEventListener('orientationchange', () => setTimeout(() => window.dispatchEvent(new Event('resize')), 250));
+
+    // Au changement d'onglet, on remonte en haut du contenu (utile sur mobile où la page défile)
+    document.querySelectorAll('.nav-btn').forEach(b => b.addEventListener('click', () => {
+        const c = document.querySelector('.app-content'); if (c) c.scrollTop = 0;
+    }));
+})();
